@@ -1,15 +1,15 @@
 import json
 import os
 
-# stores the configuration from the crt-config.json
+# stores the configuration from the config.json
 config = dict()
 live_config = dict()
 
 
-# initializing config with configuration specified in crt-config.json
+# initializing config with configuration specified in config.json
 def init():
     global config, live_config
-    config = get_config_from_file("crt-config.json")
+    config = get_config_from_file("config.json")
     live_config = get_config_from_file("live_data.json")
     validate_config()
 
@@ -22,7 +22,7 @@ def get_config_from_file(filename):
         return dict()
 
 
-# validating the configuration received from crt-config.json
+# validating the configuration received from config.json
 def validate_config():
     if config['name'] == '':
         raise Exception("📢 config-error: name field of the voice-control-system cannot be null")

@@ -15,7 +15,7 @@ from ai_functions import chat_with_mistral  # Import the function we created
 from notifier import notify
 from weather import get_weather
 
-# Stores commands from the crt-commands.json file
+# Stores commands from the commands.json file
 commands = dict()
 
 load_dotenv()
@@ -32,7 +32,7 @@ self_activated_master_mode = False  # Used for notifying the user if master cont
 choices = []
 
 
-# Initializing commands with commands specified in crt-commands.json
+# Initializing commands with commands specified in commands.json
 def init():
     global commands, choices
     commands = get_commands_from_file()
@@ -53,7 +53,7 @@ def get_weather_conditions():
 
 # Getting JSON data from file
 def get_commands_from_file():
-    return json.load(open(os.path.join(os.getcwd(), "crt-commands.json")))
+    return json.load(open(os.path.join(os.getcwd(), "commands.json")))
 
 
 from spotify_control import play_song, pause_song, next_song, previous_song

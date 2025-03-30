@@ -38,7 +38,7 @@ def speak(text, wait=False):
     player.speed = config_manager.config['voice-feedback-speed']
     
 # Uncomment the line below for a higher volume
-    # player.af = "lavfi=[volume=2]"
+    player.af = "lavfi=[volume=10]"
     
     try:
         speech = gTTS(text=text, lang='en', slow=False)
