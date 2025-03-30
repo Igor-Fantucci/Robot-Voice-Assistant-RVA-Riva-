@@ -1,0 +1,14 @@
+import os
+import subprocess
+
+import config_manager
+
+username = os.environ.get("USERNAME")
+
+
+# Sends a Desktop Notification using notify-send command
+def notify(message, duration=0, force=False):
+    if not force and not config_manager.config['notifications-enabled']:
+        return
+    subprocess.call(
+        ['notify-send', f'--icon=/home/{username}/lvc-bin/lvc-icon.png', '--app-name=\"Linux Voice Control\"', f'--expire-time={duration}', "--transient", "Linux Voice Control", message])

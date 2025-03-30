@@ -1,0 +1,57 @@
+{
+    "play song *": {
+        "exec": "python3 spotify_control.py play '{0}'",
+        "feedback": "Playing {0} on Spotify",
+        "blocking": false
+    },
+    "pause music": {
+        "exec": "python3 spotify_control.py pause",
+        "feedback": "Pausing playback",
+        "blocking": false
+    },
+    "resume music": {
+        "exec": "python3 spotify_control.py resume",
+        "feedback": "Resuming playback",
+        "blocking": false
+    },
+    "next track": {
+        "exec": "python3 spotify_control.py next",
+        "feedback": "Skipping to the next track",
+        "blocking": false
+    },
+    "previous track": {
+        "exec": "python3 spotify_control.py previous",
+        "feedback": "Going back to the previous track",
+        "blocking": false
+    },
+  "search for *": {
+    "exec": "python3 /home/fantucci/robot/voice/search_for.py {0}",
+    "feedback": "Searching the internet for {0}",
+    "blocking": false
+    },
+  "Clean history": {
+    "exec": "python3 /home/fantucci/robot/voice/clean_history.py",
+    "feedback": "Okay. Cleaning conversation history",
+    "blocking": false
+  },
+  "open *": {
+    "exec": "python3 /home/fantucci/robot/voice/open_app.py '{0}'",
+    "feedback": "Okay. Opening {0}",
+    "blocking": false
+  },
+  "climate conditions": {
+    "exec": "python3 /home/fantucci/robot/voice/weather.py",
+    "feedback": "Fetching weather conditions...",
+    "blocking": true
+},
+  "Shutdown": {
+  "exec": "/sbin/shutdown now",
+  "feedback": "Shutting down, Goodbye!",
+  "blocking": false
+  },
+  "Reboot": {
+  "exec": "/sbin/reboot",
+  "feedback": "Rebooting down, See you soon!",
+  "blocking": false
+  }
+}
