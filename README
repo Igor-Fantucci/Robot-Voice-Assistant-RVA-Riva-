@@ -1,0 +1,434 @@
+# Voice Assistant
+
+A customizable voice control system that listens for commands and executes them based on voice input, with integrated AI capabilities.
+
+## Overview
+
+This voice assistant is built with Python and uses speech recognition to process voice commands. It features hot word detection, customizable voice feedback, AI integration with Mistral AI, and a command system that can be easily configured through JSON.
+
+## Features
+
+- **Hot Word Detection**: Activate the assistant with customizable trigger phrases like "hey computer"
+- **Speech Recognition**: Uses OpenAI's Whisper model for accurate speech-to-text conversion
+- **Voice Feedback**: Text-to-speech responses with customizable speed and phrases
+- **AI Integration**: Built-in Mistral AI chat capabilities with configurable response styles
+- **Master Mode**: Optional enhanced security mode
+- **Command System**: Extensible command support through JSON configuration
+- **GPU Acceleration**: Utilizes GPU when available for faster processing
+- **Customizable Configuration**: Easily modify settings through JSON configuration files
+
+## Requirements
+
+- Python 3.x
+- PyAudio
+- OpenAI Whisper
+- mpv media player
+- gTTS (Google Text-to-Speech)
+- PyTorch
+- Click
+- Termcolor
+- Mistral AI API key (for AI functionality)
+- Pygame
+- Requests
+- fuzzywuzzy
+- python-dotenv
+- Spotipy (for Spotify integration)
+- OpenWeatherMap API key (for weather functionality)
+
+## Installation
+
+1. Clone the repository:
+   ```
+   git clone [repository-url]
+   cd robot
+   ```
+
+2. Create and activate a virtual environment:
+   ```
+   python -m venv .venv
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+   ```
+
+3. Install the required packages:
+   ```
+   pip install pyaudio whisper torch click termcolor mpv-python gtts pygame requests fuzzywuzzy python-dotenv spotipy
+   ```
+
+4. Ensure mpv media player is installed on your system:
+   ```
+   # On Ubuntu/Debian
+   sudo apt install mpv
+   
+   # On Fedora
+   sudo dnf install mpv
+   
+   # On Arch Linux
+   sudo pacman -S mpv
+   ```
+
+5. Set up your environment variables:
+   Create a `.env` file in the project root with your API keys:
+   ```
+   MISTRAL_API_KEY=your_mistral_api_key_here
+   SPOTIPY_CLIENT_ID=your_spotify_client_id_here
+   SPOTIPY_CLIENT_SECRET=your_spotify_client_secret_here
+   WEATHER_API_KEY=your_openweathermap_api_key_here
+   ```
+
+## Configuration
+
+The system is configured through multiple JSON files:
+
+### Main Configuration (`config.json`)
+
+```json
+{
+  "name": "computer",
+  "greeting": "Hello Human! What may I do for you today?",
+  "record-duration": 3,
+  "channels": 1,
+  "rate": 48000,
+  "chunk-size": 1024,
+  "notifications-enabled": false,
+  "show-commands-on-startup": false,
+  "logs": true,
+  "speech-threshold": 3000,
+  "live-mode": false,
+  "use-hot-word-in-basic-mode": true,
+  "hot-words": [
+    "hey computer",
+    "crt",
+    "c r t",
+    "computer"
+  ],
+  "master-mode": false,
+  "master-mode-barrier-speech-enabled": true,
+  "master-mode-barrier-speech": "Unauthorized",
+  "voice-feedback-enabled": true,
+  "voice-transcription-feedback-enabled": false,
+  "voice-feedback-speed": 1.2,
+  "voice-cache-enabled": true,
+  "voice-feedback-default-speeches": [],
+  "voice-feedback-transcription-capable-speeches": [
+    "transcribing...",
+    "getting it..."
+  ],
+  "voice-feedback-turning-off": "Turning off. See you later!"
+}
+```
+
+### AI Configuration (`ai_config.json`)
+
+```json
+{
+  "response_style": "detailed"
+}
+```
+
+### Commands Configuration (`commands.json`)
+
+```json
+{
+  "play song *": {
+    "exec": "python3 spotify_control.py play '{0}'",
+    "feedback": "Playing {0} on Spotify",
+    "blocking": false
+  },
+  "pause music": {
+    "exec": "python3 spotify_control.py pause",
+    "feedback": "Pausing playback",
+    "blocking": false
+  },
+  "resume music": {
+    "exec": "python3 spotify_control.py resume",
+    "feedback": "Resuming playback",
+    "blocking": false
+  },
+  "next track": {
+    "exec": "python3 spotify_control.py next",
+    "feedback": "Skipping to next track",
+    "blocking": false
+  },
+  "previous track": {
+    "exec": "python3 spotify_control.py previous",
+    "feedback": "Going to previous track",
+    "blocking": false
+  },
+  "search for *": {
+    "exec": "python3 search_for.py '{0}'",
+    "feedback": "Searching for {0}",
+    "blocking": false
+  },
+  "open *": {
+    "exec": "python3 open_app.py '{0}'",
+    "feedback": "Opening {0}",
+    "blocking": false
+  },
+  "climate conditions": {
+    "exec": "python3 weather.py",
+    "feedback": "Checking weather conditions",
+    "blocking": true
+  },
+  "shutdown": {
+    "exec": "sudo shutdown now",
+    "feedback": "Shutting down the system",
+    "blocking": true
+  },
+  "reboot": {
+    "exec": "sudo reboot",
+    "feedback": "Rebooting the system",
+    "blocking": true
+  }
+}
+```
+
+## Configuration Options
+
+### Main Configuration
+
+- **name**: The name of your voice assistant
+- **greeting**: The greeting message when the assistant starts
+- **record-duration**: Duration to record audio in seconds
+- **channels**: Audio channels (1 for mono, 2 for stereo)
+- **rate**: Audio sample rate
+- **chunk-size**: Audio chunk size for processing
+- **speech-threshold**: Threshold for detecting speech
+- **use-hot-word-in-basic-mode**: Whether to use hot word detection
+- **hot-words**: List of phrases that can trigger the assistant
+- **master-mode**: Enhanced security mode
+- **voice-feedback-enabled**: Enable/disable voice responses
+- **voice-feedback-speed**: Speed of voice feedback (1.0 is normal)
+- **voice-cache-enabled**: Cache voice feedback for reuse
+
+### AI Configuration
+
+- **response_style**: AI response style, can be "short" or "detailed"
+
+### Commands Configuration
+
+Each command is defined with the following properties:
+- **exec**: The command to execute (with {0}, {1}, etc. as placeholders for parameters)
+- **feedback**: The feedback message (with placeholders)
+- **blocking**: Whether the command blocks execution until completed
+
+## Usage
+
+Run the voice assistant:
+
+```
+python robot/voice/main.py
+```
+
+### Command Line Options
+
+- `--model`: Choose the Whisper model size (tiny, base, small, medium, large)
+- `--ui`: Launch in UI mode (true/false)
+
+Example:
+```
+python robot/voice/main.py --model medium --ui true
+```
+
+### Basic Usage Flow
+
+1. The system starts and listens for a hot word (if enabled)
+2. When a hot word is detected, the assistant responds and waits for a command
+3. Speak your command clearly
+4. The system processes your command and executes the corresponding action
+
+### AI Conversation
+
+The assistant integrates with Mistral AI for natural language conversations:
+- Toggle between "short" and "detailed" response styles by saying "toggle response style"
+- Conversation history is saved between sessions
+- The AI can provide information, answer questions, and assist with various tasks
+
+## Integrated Utility Scripts
+
+The system comes with several utility scripts to handle specific functionality:
+
+### Application Launcher (`open_app.py`)
+
+This script allows you to open applications by voice command. It features:
+
+- Predefined list of common applications
+- Dynamic application discovery across standard directories
+- Fuzzy matching for application names
+- Support for native applications, snap packages, and flatpak
+- Error handling and voice feedback
+
+Usage through voice command:
+```
+"open firefox"
+"open spotify"
+"open settings"
+```
+
+### Web Search (`search_for.py`)
+
+A simple script that:
+
+- Takes a search term from the command
+- Constructs a Google search URL
+- Opens the search in Firefox browser
+
+Usage through voice command:
+```
+"search for voice assistant tutorial"
+"search for weather in New York"
+```
+
+### Spotify Control (`spotify_control.py`)
+
+Controls Spotify playback using the Spotipy library. Features:
+
+- Play specific songs or artists
+- Pause, resume, skip tracks, and go to previous tracks
+- Automatic device detection
+- Error handling for common Spotify connection issues
+
+Requires Spotify API credentials in your environment variables.
+
+Usage through voice commands:
+```
+"play song bohemian rhapsody"
+"pause music"
+"resume music"
+"next track"
+"previous track"
+```
+
+### Weather Information (`weather.py`)
+
+Fetches and speaks current weather conditions using the OpenWeatherMap API:
+
+- Automatically determines your location by IP address if no city specified
+- Provides temperature, weather description, and humidity
+- Speaks the weather report using the voice feedback system
+
+Requires an OpenWeatherMap API key in your environment variables.
+
+Usage through voice command:
+```
+"climate conditions"
+```
+
+## Supported Commands
+
+The system comes with the following pre-configured commands:
+- "play song [song name]" - Play a specific song on Spotify
+- "pause music" - Pause Spotify playback
+- "resume music" - Resume Spotify playback
+- "next track" - Skip to the next track
+- "previous track" - Go back to the previous track
+- "search for [query]" - Search the internet using Firefox
+- "clean history" - Clear conversation history
+- "open [app name]" - Open a specific application
+- "climate conditions" - Get current weather
+- "shutdown" - Shut down the system
+- "reboot" - Restart the system
+
+## Customizing Commands
+
+You can easily add or modify commands by editing the `commands.json` file. Each command follows this format:
+
+```json
+"command pattern": {
+  "exec": "script or command to execute",
+  "feedback": "feedback message",
+  "blocking": true/false
+}
+```
+
+Use asterisks (*) in the command pattern to capture parameters, which are passed to the execution command as {0}, {1}, etc.
+
+## Extending the System
+
+You can extend the system by creating your own Python scripts. Follow these guidelines:
+
+1. Create a script in the `robot/voice/` directory
+2. Make the script executable (if on Unix-like systems)
+3. Add appropriate error handling and feedback
+4. Integrate with the voice feedback system when appropriate
+5. Add your command to `commands.json`
+
+Example of a custom script:
+```python
+#!/usr/bin/env python3
+import sys
+from voice_feedback import speak
+
+def my_custom_function(parameter):
+    # Your functionality here
+    result = f"Processed {parameter}"
+    speak(result)
+    return result
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        parameter = sys.argv[1]
+        my_custom_function(parameter)
+    else:
+        speak("No parameter provided")
+```
+
+Then add to `commands.json`:
+```json
+"do something with *": {
+  "exec": "python3 my_custom_script.py '{0}'",
+  "feedback": "Doing something with {0}",
+  "blocking": true
+}
+```
+
+## Troubleshooting
+
+- **No audio input detected**: Check your microphone settings and permissions
+- **"Network connection is required"**: Connect to the internet for voice feedback and AI functionality
+- **"Configure master mode"**: Set up the master mode before enabling it
+- **Performance issues**: Try using a smaller model size (tiny or base)
+- **AI not responding**: Check your Mistral AI API key and internet connection
+- **Spotify commands not working**: Verify your Spotify API credentials and ensure Spotify is running on a device
+- **Application not opening**: Check if the application is installed and accessible in your PATH
+- **Weather information unavailable**: Verify your OpenWeatherMap API key and internet connection
+
+## API Keys and Services
+
+This project utilizes several third-party services that require API keys:
+
+1. **Mistral AI**: For natural language processing capabilities
+2. **Spotify API**: For music control functionality
+3. **OpenWeatherMap API**: For weather information
+
+Follow the respective service documentation to obtain your API keys:
+- Mistral AI: [https://mistral.ai/](https://mistral.ai/)
+- Spotify Developer Dashboard: [https://developer.spotify.com/dashboard/](https://developer.spotify.com/dashboard/)
+- OpenWeatherMap: [https://openweathermap.org/api](https://openweathermap.org/api)
+
+## Directories
+
+- `misc/`: Contains cached audio files and temporary data
+- `training-data/`: Used for master mode configuration
+- `robot/voice/`: Contains the main scripts and utility functions
+
+## Future Development
+
+Possible areas for enhancement:
+- GUI interface for configuration and monitoring
+- Additional service integrations (calendar, email, home automation)
+- Improved natural language understanding
+- Multi-language support
+- Custom wake word training
+
+## License
+
+GNU GPL (General Public License)
+
+## Credits
+
+- Igor Fantucci de Mattos Teixeira
+- OpenAI Whisper for speech recognition
+- Google Text-to-Speech for voice feedback
+- Mistral AI for conversation capabilities
+- Spotipy for Spotify integration
+- OpenWeatherMap for weather data
