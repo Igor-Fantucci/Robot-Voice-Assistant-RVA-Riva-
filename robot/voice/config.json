@@ -12,10 +12,11 @@
   "live-mode": false,
   "use-hot-word-in-basic-mode": true,
   "hot-words": [
-    "hey computer",
     "R V A",
     "RVA",
     "Riva",
+    "riva",
+    "hey",
     "computer"
   ],
   "master-mode": false,
