@@ -12,10 +12,6 @@
   "live-mode": false,
   "use-hot-word-in-basic-mode": true,
   "hot-words": [
-    "R V A",
-    "RVA",
-    "Riva",
-    "riva",
     "hey",
     "computer"
   ],
