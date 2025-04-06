@@ -96,9 +96,7 @@ The system is configured through multiple JSON files:
   "live-mode": false,
   "use-hot-word-in-basic-mode": true,
   "hot-words": [
-    "hey computer",
-    "crt",
-    "c r t",
+    "hey",
     "computer"
   ],
   "master-mode": false,
