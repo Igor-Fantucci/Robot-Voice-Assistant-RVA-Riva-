@@ -53,5 +53,10 @@
   "exec": "/sbin/reboot",
   "feedback": "Rebooting down, See you soon!",
   "blocking": false
+  },
+  "close *": {
+    "exec": "/home/fantucci/robot/.venv/bin/python3 /home/fantucci/robot/voice/close_app.py *",
+    "feedback": "Closing *",
+    "blocking": false
   }
 }
