@@ -139,11 +139,11 @@ def launch_if_any(text):
         return
         
 
-    # Simpler alternative that just ignores the return code
+    # Check if the command is to close an application
     if text.lower().startswith("close"):
         app_name = text[len("close"):].strip()
         log(f"Trying to close application: {app_name}", "yellow")
-    
+        speak(f"Clossing {app_name}")
         # Call the script to close the application
         subprocess.run(
             ["/home/fantucci/robot/.venv/bin/python3", "/home/fantucci/robot/voice/close_app.py", app_name],
@@ -151,7 +151,6 @@ def launch_if_any(text):
             stderr=subprocess.PIPE,
             text=True
         )
-        speak(f"Clossing {app_name}")
         return  
     
     # Check if the command is for Spotify
